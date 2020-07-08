@@ -5,10 +5,16 @@ To save trees, ink, time, and to stick it to the bureaucrats, I wrote this scrip
 #+end_abstract
 [[file:falsiscan.png]]
 ** Installation
-- make sure you have =shuf= available (on macOS install coreutils via Homebrew or MacPorts)
+   Please install the following dependencies:
+   - [[https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/][pdftk]]
+   - [[https://imagemagick.org/index.php][ImageMagick]]
+   - [[https://www.gnu.org/software/coreutils/][Coreutils]] (Install by default on most Linux distros, or =brew install coreutils= on MacOSX)
+
+     
+   If necessary, please configure ImageMagick so that it is allowed to fiddle with PDFs: https://stackoverflow.com/questions/52998331/imagemagick-security-policy-pdf-blocking-conversion
 ** Usage
 *** Create a signature sample
-- Print the [[file:Signature_guide.pdf]], 
+- Print the [[file:Signature_guide.pdf]], preferably on A4 paper,
 - sign in each of the full sized box (this will give 27 different signatures),
 - scan the resulting paper and save it as a pdf (called e.g. =signatures.pdf=),
 - run =./signdiv.sh signatures.pdf=,
@@ -18,8 +24,32 @@ To save trees, ink, time, and to stick it to the bureaucrats, I wrote this scrip
 You can maintain multiple signature directories, or run the above again if you want more than 27 signatures.
 *** False-sign and False-scan a document
 - Get the PDF the bureaucrats want you to print, sign and scan (e.g. =document.pdf=),
-- run =./falsisign.sh document.pdf signatures 1000 2500 document-scanned.pdf=:
+- run =./falsisign.sh -d document.pdf -s signatures -x 1000 -y 2500 -o document-scanned.pdf=:
   - The first argument is the document you need to sign/scan
   - The second argument is the directory with all your different signatures
   - The next two arguments are the X and Y coordinates of where your signature will be. The page dimension is 3560x4752.
   - The last argument is the output file name.
+
+
+You can also initial and sign a document. The full usage string is:
+#+NAME: Usage string
+#+begin_src text
+Falsisign.
+
+Usage:
+    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-i <init_dir> -z <Z> -t <T> [-q <pages>]] -o <output_pdf>
+
+Options:
+    -d <input_pdf>   The PDF document you want to sign
+    -x <X>           The horizontal position in pixels of where the signature will be
+    -y <Y>           The vertical position in pixels of where the signature will be
+    -p <pages>       Optional space-separated list of pages to sign, e.g. '2 4 10'
+                     Defaults to all or only the last if -i is specified
+    -s <sign_dir>    Directory where the signatures will be randomly chosen
+    -i <init_dir>    Optional directory where the initials will be randomly chosen
+    -z <Z>           Optional horizontal position in pixels of the initials
+    -t <T>           Optional vertical position in pixels of the initials
+    -q <pages>       Optional space-separated list of pages to initial
+                     Defaults to all but the last
+    -o <output_pdf>  The output file name
+#+end_src
