@@ -4,6 +4,8 @@ For bureaucratic reasons, a colleague of mine had to print, sign, scan and send 
 To save trees, ink, time, and to stick it to the bureaucrats, I wrote this script.
 #+end_abstract
 [[file:falsiscan.png]]
+** Installation
+- make sure you have =shuf= available (on macOS install coreutils via Homebrew or MacPorts)
 ** Usage
 *** Create a signature sample
 - Print the [[file:Signature_guide.pdf]], 
