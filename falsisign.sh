@@ -9,7 +9,7 @@ TMPDIR=$(mktemp -d --t falsisign-XXXXXXXXXX)
 
 # Extract each page of the PDF
 convert +profile '*' "${DOCUMENT}" "${TMPDIR}/${DOCUMENT_BN}.pdf"  # Some PDF trigger errors with their shitty profiles
-convert "${TMPDIR}/${DOCUMENT_BN}.pdf" -density 576 -resize 3560x4752 "${TMPDIR}/${DOCUMENT_BN}-%04d.png"
+convert "${TMPDIR}/${DOCUMENT_BN}.pdf" -density 576 -resize 2480x3508! "${TMPDIR}/${DOCUMENT_BN}-%04d.png"
 for page in "${TMPDIR}/${DOCUMENT_BN}"-*.png
 do
     PAGE_BN=$(basename "${page}" .png)
