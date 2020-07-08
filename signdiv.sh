@@ -2,7 +2,7 @@
 set -Eeuxo pipefail
 
 SIGNATURES=$1
-TMPDIR=$(mktemp --directory --tmpdir falsisign-XXXXXXXXXX)
+TMPDIR=$(mktemp -d -t falsisign-XXXXXXXXXX)
 SIGNATURES_BN=$(basename "${SIGNATURES}" .pdf)
 
 convert -density 576 -resize 3560x4752 -transparent white "${SIGNATURES}" "${TMPDIR}/${SIGNATURES_BN}.png"

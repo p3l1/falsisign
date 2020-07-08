@@ -5,7 +5,7 @@ DOCUMENT="$1"
 X=$3
 Y=$4
 DOCUMENT_BN=$(basename "${DOCUMENT}" .pdf)
-TMPDIR=$(mktemp --directory --tmpdir falsisign-XXXXXXXXXX)
+TMPDIR=$(mktemp -d --t falsisign-XXXXXXXXXX)
 
 # Extract each page of the PDF
 convert +profile '*' "${DOCUMENT}" "${TMPDIR}/${DOCUMENT_BN}.pdf"  # Some PDF trigger errors with their shitty profiles
