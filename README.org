@@ -36,7 +36,7 @@ You can maintain multiple signature directories, or run the above again if you w
   - The last argument is the output file name.
 
 
-You can also initial and sign a document. The full usage string is:
+You can also initial and sign a document, and choose the pages where to sign and initial (don't forget to quote the page numbers!). The full usage string is:
 #+NAME: Usage string
 #+begin_src text
 Falsisign.
