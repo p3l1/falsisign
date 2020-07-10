@@ -51,6 +51,7 @@ Options:
     -p <pages>       Optional space-separated list of pages to sign, e.g. '2 4 10'
                      Defaults to all or only the last if -i is specified
     -s <sign_dir>    Directory where the signatures will be randomly chosen
+    -c               Make a clean scan (disable noise and rotation)
     -i <init_dir>    Optional directory where the initials will be randomly chosen
     -z <Z>           Optional horizontal position in pixels of the initials
     -t <T>           Optional vertical position in pixels of the initials

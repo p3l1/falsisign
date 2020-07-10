@@ -6,7 +6,7 @@ usage(){
 Falsisign.
 
 Usage:
-    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-i <init_dir> -z <Z> -t <T> [-q <pages>]] -o <output_pdf>
+    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-c] [-i <init_dir> -z <Z> -t <T> [-q <pages>]] -o <output_pdf>
 
 Options:
     -d <input_pdf>   The PDF document you want to sign
@@ -15,6 +15,7 @@ Options:
     -p <pages>       Optional space-separated list of pages to sign, e.g. '2 4 10'
                      Defaults to all or only the last if -i is specified
     -s <sign_dir>    Directory where the signatures will be randomly chosen
+    -c               Make a clean scan (disable noise and rotation)
     -i <init_dir>    Optional directory where the initials will be randomly chosen
     -z <Z>           Optional horizontal position in pixels of the initials
     -t <T>           Optional vertical position in pixels of the initials
@@ -25,7 +26,7 @@ EOF
     exit "$1"
 }
 
-while getopts :hd:x:y:p:s:i:z:t:q:o: flag
+while getopts :hd:x:y:p:s:ci:z:t:q:o: flag
 do
     case "${flag}" in
         d ) DOCUMENT="${OPTARG}";;
@@ -33,6 +34,7 @@ do
         y ) Y="${OPTARG}";;
         p ) SIGN_PAGES="${OPTARG}";;
         s ) SIGNATURES_DIR="${OPTARG}";;
+        c ) CLEAN=1;;
         i ) INITIALS_DIR="${OPTARG}";;
         z ) Z="${OPTARG}";;
         t ) T="${OPTARG}";;
@@ -107,8 +109,13 @@ do
         PAGE_IN="${page}"
     fi
     # https://tex.stackexchange.com/a/94541
-    ROTATION=$(shuf -n 1 -e '-' '')$(shuf -n 1 -e $(seq 0 .1 2))
-    convert -density 150 "${PAGE_IN}" -linear-stretch 3.5%x10% -blur 0x0.5 -attenuate 0.25 -rotate "${ROTATION}" +noise Gaussian "${TMPDIR}/${PAGE_BN}-scanned.pdf"
+    if [ -n "${CLEAN:-}" ]
+    then
+        convert -density 150 "${PAGE_IN}" -attenuate 0.25 "${TMPDIR}/${PAGE_BN}-scanned.pdf"
+    else
+        ROTATION=$(shuf -n 1 -e '-' '')$(shuf -n 1 -e $(seq 0 .1 2))
+        convert -density 150 "${PAGE_IN}" -linear-stretch 3.5%x10% -blur 0x0.5 -attenuate 0.25 -rotate "${ROTATION}" +noise Gaussian "${TMPDIR}/${PAGE_BN}-scanned.pdf"
+    fi
 done
 convert "${TMPDIR}/${DOCUMENT_BN}"-*-scanned.pdf -density 150 -colorspace RGB "${TMPDIR}/${DOCUMENT_BN}"_large.pdf
 convert "${TMPDIR}/${DOCUMENT_BN}"_large.pdf -compress Zip "${OUTPUT_FNAME}"
