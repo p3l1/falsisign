@@ -6,7 +6,7 @@ usage(){
 Falsisign.
 
 Usage:
-    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-c] [-i <init_dir> -z <Z> -t <T> [-q <pages>]] -o <output_pdf>
+    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-c] [-i <init_dir> -z <Z> -t <T> [-q <pages>]] [-r <density>] -o <output_pdf>
 
 Options:
     -d <input_pdf>   The PDF document you want to sign
@@ -21,6 +21,7 @@ Options:
     -t <T>           Optional vertical position in pixels of the initials
     -q <pages>       Optional space-separated list of pages to initial
                      Defaults to all but the last
+    -r <density>     Specify the dpi to use in intermediate steps
     -o <output_pdf>  The output file name
 EOF
     exit "$1"
@@ -39,6 +40,7 @@ do
         z ) Z="${OPTARG}";;
         t ) T="${OPTARG}";;
         q ) INITIAL_PAGES="${OPTARG}";;
+        r ) DENSITY=${OPTARGS};;
         o ) OUTPUT_FNAME="${OPTARG}";;
         h ) usage 0 ;;
         * ) usage 1 ;;
@@ -50,16 +52,22 @@ then
     usage 1
 fi
 
+if [ -z "${DENSITY:-}" ]
+then
+    DENSITY=150
+fi
 DOCUMENT_BN=$(basename "${DOCUMENT}" .pdf)
 TMPDIR=$(mktemp -d --t falsisign-XXXXXXXXXX)
 
+# Preprocess the PDF to make sure we get a RGB pdf
+# https://stackoverflow.com/questions/8475695/how-to-convert-pdf-from-cmyk-to-rgb-for-displaying-on-ipad
+gs -sDEVICE=pdfwrite -dBATCH -dNOPAUSE -dCompatibilityLevel=1.4 -dColorConversionStrategy=/sRGB -dProcessColorModel=/DeviceRGB -dUseCIEColor=true -sOutputFile="${TMPDIR}/${DOCUMENT_BN}_RGB.pdf" "${DOCUMENT}"
 # Extract and convert each page of the PDF
-convert +profile '*' "${DOCUMENT}" "${TMPDIR}/${DOCUMENT_BN}.pdf"  # Some PDF trigger errors with their shitty profiles
-pdftk "${TMPDIR}/${DOCUMENT_BN}.pdf" burst output "${TMPDIR}/${DOCUMENT_BN}-%04d.pdf"
+pdftk "${TMPDIR}/${DOCUMENT_BN}_RGB.pdf" burst output "${TMPDIR}/${DOCUMENT_BN}-%04d.pdf"
 for page in "${TMPDIR}/${DOCUMENT_BN}"-*.pdf
 do
     page_bn=$(basename ${page} .pdf)
-    convert "${page}" -density 576 -resize 2480x3508! "${TMPDIR}/${page_bn}.png"
+    convert -density "${DENSITY}" "${page}" -resize 2480x3508! "${TMPDIR}/${page_bn}.png"
 done
 
 # Set which pages are to sign, to initial, or to leave alone
@@ -111,12 +119,15 @@ do
     # https://tex.stackexchange.com/a/94541
     if [ -n "${CLEAN:-}" ]
     then
-        convert -density 150 "${PAGE_IN}" -attenuate 0.25 "${TMPDIR}/${PAGE_BN}-scanned.pdf"
+        convert -density "${DENSITY}" "${PAGE_IN}" -attenuate 0.25 "${TMPDIR}/${PAGE_BN}-scanned.pdf"
     else
         ROTATION=$(shuf -n 1 -e '-' '')$(shuf -n 1 -e $(seq 0 .1 2))
-        convert -density 150 "${PAGE_IN}" -linear-stretch 3.5%x10% -blur 0x0.5 -attenuate 0.25 -rotate "${ROTATION}" +noise Gaussian "${TMPDIR}/${PAGE_BN}-scanned.pdf"
+        convert -density "${DENSITY}" "${PAGE_IN}" -linear-stretch 3.5%x10% -blur 0x0.5 -attenuate 0.25 -rotate "${ROTATION}" +noise Gaussian "${TMPDIR}/${PAGE_BN}-scanned.pdf"
     fi
 done
-convert "${TMPDIR}/${DOCUMENT_BN}"-*-scanned.pdf -density 150 -colorspace RGB "${TMPDIR}/${DOCUMENT_BN}"_large.pdf
-convert "${TMPDIR}/${DOCUMENT_BN}"_large.pdf -compress Zip "${OUTPUT_FNAME}"
+convert -density "${DENSITY}" "${TMPDIR}/${DOCUMENT_BN}"-*-scanned.pdf "${TMPDIR}/${DOCUMENT_BN}"_large.pdf
+# https://askubuntu.com/a/626301
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/default \
+   -dNOPAUSE -dQUIET -dBATCH -dDetectDuplicateImages \
+   -dCompressFonts=true -r"${DENSITY}" -sOutputFile="${OUTPUT_FNAME}" "${TMPDIR}/${DOCUMENT_BN}"_large.pdf
 rm -rf ${TMPDIR}
