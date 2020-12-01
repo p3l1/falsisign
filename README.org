@@ -6,7 +6,7 @@ To save trees, ink, time, and to stick it to the bureaucrats, I wrote this scrip
 [[file:falsiscan.png]]
 ** Installation
    Please install the following dependencies:
-   - [[https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/][pdftk]]
+   - [[https://poppler.freedesktop.org/][pdfseparate]]
    - [[https://imagemagick.org/index.php][ImageMagick]]
    - [[https://www.gnu.org/software/coreutils/][Coreutils]] (Install by default on most Linux distros, or =brew install coreutils= on MacOSX)
 

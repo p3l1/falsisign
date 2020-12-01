@@ -63,15 +63,16 @@ TMPDIR=$(mktemp -d -t falsisign-XXXXXXXXXX)
 # https://stackoverflow.com/questions/8475695/how-to-convert-pdf-from-cmyk-to-rgb-for-displaying-on-ipad
 gs -sDEVICE=pdfwrite -dBATCH -dNOPAUSE -dCompatibilityLevel=1.4 -dColorConversionStrategy=/sRGB -dProcessColorModel=/DeviceRGB -dUseCIEColor=true -sOutputFile="${TMPDIR}/${DOCUMENT_BN}_RGB.pdf" "${DOCUMENT}"
 # Extract and convert each page of the PDF
-pdftk "${TMPDIR}/${DOCUMENT_BN}_RGB.pdf" burst output "${TMPDIR}/${DOCUMENT_BN}-%04d.pdf"
+pdfseparate "${TMPDIR}/${DOCUMENT_BN}_RGB.pdf" "${TMPDIR}/${DOCUMENT_BN}-%04d.pdf"
+NUMBER_OF_PAGES=0
 for page in "${TMPDIR}/${DOCUMENT_BN}"-*.pdf
 do
     page_bn=$(basename ${page} .pdf)
     convert -density "${DENSITY}" "${page}" -resize 2480x3508! "${TMPDIR}/${page_bn}.png"
+    let NUMBER_OF_PAGES=NUMBER_OF_PAGES+1
 done
 
 # Set which pages are to sign, to initial, or to leave alone
-NUMBER_OF_PAGES=$(grep NumberOfPages "${TMPDIR}/"doc_data.txt | grep -E -o '[[:digit:]]+')
 ALL_PAGES=$(seq 1 "${NUMBER_OF_PAGES}")
 if [ -z "${SIGN_PAGES:-}" ]
 then  # SIGN_PAGES default depends on whether we have to initial some pages (-i option)
