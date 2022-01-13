@@ -57,7 +57,7 @@ then
     DENSITY=150
 fi
 DOCUMENT_BN=$(basename "${DOCUMENT}" .pdf)
-TMPDIR=$(mktemp -d --t falsisign-XXXXXXXXXX)
+TMPDIR=$(mktemp -d -t falsisign-XXXXXXXXXX)
 
 # Preprocess the PDF to make sure we get a RGB pdf
 # https://stackoverflow.com/questions/8475695/how-to-convert-pdf-from-cmyk-to-rgb-for-displaying-on-ipad
