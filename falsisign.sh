@@ -6,7 +6,7 @@ usage(){
 Falsisign.
 
 Usage:
-    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-c] [-i <init_dir> -z <Z> -t <T> [-q <pages>]] [-r <density>] -o <output_pdf>
+    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-S <scale>] [-c] [-i <init_dir> -z <Z> -t <T> [-q <pages>]] [-r <density>] -o <output_pdf>
 
 Options:
     -d <input_pdf>   The PDF document you want to sign
@@ -15,6 +15,7 @@ Options:
     -p <pages>       Optional space-separated list of pages to sign, e.g. '2 4 10'
                      Defaults to all or only the last if -i is specified
     -s <sign_dir>    Directory where the signatures will be randomly chosen
+    -S <scale>       Scaling of the randomly chosen signature in percentage
     -c               Make a clean scan (disable noise and rotation)
     -i <init_dir>    Optional directory where the initials will be randomly chosen
     -z <Z>           Optional horizontal position in pixels of the initials
@@ -36,6 +37,7 @@ do
         y ) Y="${OPTARG}";;
         p ) SIGN_PAGES="${OPTARG}";;
         s ) SIGNATURES_DIR="${OPTARG}";;
+        S ) SCALE="${OPTARG}";;
         c ) CLEAN=1;;
         i ) INITIALS_DIR="${OPTARG}";;
         z ) Z="${OPTARG}";;
@@ -52,6 +54,11 @@ done
 if [ -z "${DOCUMENT:-}" ] || [ -z "${X:-}" ] || [ -z "${Y:-}" ] || [ -z "${SIGNATURES_DIR:-}" ] || [ -z "${OUTPUT_FNAME}" ]
 then
     usage 1
+fi
+
+if [ -z "${SCALE:-}" ]
+then
+    SCALE=100
 fi
 
 if [ -z "${DENSITY:-}" ]
@@ -96,7 +103,7 @@ do
     page=${TMPDIR}/${DOCUMENT_BN}-$(printf "%04d" "${PAGE_NB}").png
     PAGE_BN=$(basename "${page}" .png)
     SIGNATURE=$(find "${SIGNATURES_DIR}" -name '*.png' | shuf -n 1)
-    convert "${page}" "${SIGNATURE}" -geometry "+${X}+${Y}" +profile '*' -composite "${TMPDIR}/${PAGE_BN}"-signed.png
+    convert "${page}" \( "${SIGNATURE}" -resize "${SCALE}%" \) -geometry "+${X}+${Y}" +profile '*' -composite "${TMPDIR}/${PAGE_BN}"-signed.png
 done
 # Initial all the pages to be initialed
 if [ -n "${INITIAL_PAGES:-}" ]

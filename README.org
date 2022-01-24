@@ -62,7 +62,7 @@ You can also initial and sign a document, and choose the pages where to sign and
 Falsisign.
 
 Usage:
-    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-i <init_dir> -z <Z> -t <T> [-q <pages>]] -o <output_pdf>
+    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-S <scale>] [-i <init_dir> -z <Z> -t <T> [-q <pages>]] -o <output_pdf>
 
 Options:
     -d <input_pdf>   The PDF document you want to sign
@@ -71,6 +71,7 @@ Options:
     -p <pages>       Optional space-separated list of pages to sign, e.g. '2 4 10'
                      Defaults to all or only the last if -i is specified
     -s <sign_dir>    Directory where the signatures will be randomly chosen
+    -S <scale>       Scaling of the randomly chosen signature in percentage
     -c               Make a clean scan (disable noise and rotation)
     -i <init_dir>    Optional directory where the initials will be randomly chosen
     -z <Z>           Optional horizontal position in pixels of the initials
