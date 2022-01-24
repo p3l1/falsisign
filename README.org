@@ -16,7 +16,6 @@ To save trees, ink, time, and to stick it to the bureaucrats, I wrote this scrip
    Clone this repo
    : git clone https://gitlab.com/edouardklein/falsisign.git
 
-   Fedora users can enjoy the package made by Miroslav Suchý (Thanks!): https://copr.fedorainfracloud.org/coprs/msuchy/falsiscan/
 ** Usage
 *** Create a signature sample
 - Print the [[file:Signature_guide.pdf]], preferably on A4 paper,
