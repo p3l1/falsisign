@@ -21,7 +21,7 @@ To save trees, ink, time, and to stick it to the bureaucrats, I wrote this scrip
 - Print the [[file:Signature_guide.pdf]], preferably on A4 paper,
 - sign in each of the full sized box (this will give 27 different signatures),
 - scan the resulting paper and save it as a pdf (called e.g. =signatures.pdf=),
-- run =./signdiv.sh signatures.pdf=,
+- run =./signdiv.sh -d signatures.pdf= (run =./signdiv.sh -h= to see offset and margin options, which will help you remove the red guide lines from your signatures),
 - check in =signatures= that you have 27 png files correctly cropped. You can manually edit the .png files to your liking.
 
 
