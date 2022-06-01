@@ -5,6 +5,9 @@ To save trees, ink, time, and to stick it to the bureaucrats, I wrote this scrip
 #+end_abstract
 [[file:falsiscan.png]]
 ** Installation
+⚠ You may need to tweak ImageMagick's default security policy by adding
+:  <policy domain="coder" rights="read | write" pattern="PDF" />
+just before =</policymap>= in =/etc/ImageMagick-7/policy.xml=, as recommended in https://stackoverflow.com/questions/52998331/imagemagick-security-policy-pdf-blocking-conversion
 *** Binary
 Get the latest Linux binary:
 : wget https://dump.rdklein.fr/falsisign.tar.gz
@@ -31,8 +34,6 @@ uninstall falsisign.
    - [[https://www.gnu.org/software/coreutils/][Coreutils]] (Install by default on most Linux distros, or =brew install coreutils= on MacOSX)
 
      
-   If necessary, please configure ImageMagick so that it is allowed to fiddle with PDFs: https://stackoverflow.com/questions/52998331/imagemagick-security-policy-pdf-blocking-conversion
-
    Clone this repo
    : git clone https://gitlab.com/edouardklein/falsisign.git
 
