@@ -22,12 +22,13 @@ Options:
     -q <pages>       Optional space-separated list of pages to initial
                      Defaults to all but the last
     -r <density>     Specify the dpi to use in intermediate steps
+    -a <angle>  Specify the rotation (in degrees) to use for all pages
     -o <output_pdf>  The output file name
 EOF
     exit "$1"
 }
 
-while getopts :hd:x:y:p:s:ci:z:t:q:o: flag
+while getopts :hd:x:y:p:s:ci:z:t:q:r:a:o: flag
 do
     case "${flag}" in
         d ) DOCUMENT="${OPTARG}";;
@@ -40,7 +41,8 @@ do
         z ) Z="${OPTARG}";;
         t ) T="${OPTARG}";;
         q ) INITIAL_PAGES="${OPTARG}";;
-        r ) DENSITY=${OPTARGS};;
+        r ) DENSITY="${OPTARG}";;
+        a ) FIXED_ROTATION="${OPTARG}";;
         o ) OUTPUT_FNAME="${OPTARG}";;
         h ) usage 0 ;;
         * ) usage 1 ;;
@@ -122,7 +124,12 @@ do
     then
         convert -density "${DENSITY}" "${PAGE_IN}" -attenuate 0.25 "${TMPDIR}/${PAGE_BN}-scanned.pdf"
     else
-        ROTATION=$(shuf -n 1 -e '-' '')$(shuf -n 1 -e $(seq 0 .1 2))
+        if [ -z "${FIXED_ROTATION+x}" ]
+        then
+            ROTATION=$(shuf -n 1 -e '-' '')$(shuf -n 1 -e $(seq 0 .1 2))
+        else
+            ROTATION="${FIXED_ROTATION}"
+        fi
         convert -density "${DENSITY}" "${PAGE_IN}" -linear-stretch 3.5%x10% -blur 0x0.5 -attenuate 0.25 -rotate "${ROTATION}" +noise Gaussian "${TMPDIR}/${PAGE_BN}-scanned.pdf"
     fi
 done
