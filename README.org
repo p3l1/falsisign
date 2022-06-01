@@ -10,7 +10,7 @@ Get the latest Linux binary:
 : wget https://dump.rdklein.fr/falsisign.tar.gz
 unpack it at the root of your disk with
 : cd / && sudo tar xvzf /path/to/falsisign.tar.gz
-It will link the =falsisign= and =signdiv= exe in =/opt/bin/= (which the scripts
+It will link the =falsisign= and =signdiv= exe in =/opt/bin/=, which the scripts
 then expect to be in your path:
 : echo 'export PATH=$PATH:/opt/bin' >> ~/.bash_profile  # or whatever the profile of your shell is
 
