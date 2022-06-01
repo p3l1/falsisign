@@ -84,3 +84,15 @@ Options:
     -r <density>     Specify the dpi to use in intermediate steps
     -a <angle>  Specify the rotation (in degrees) to use for all pages
     -o <output_pdf>  The output file name
+*** Finding the coordinates for the signature and initials
+Finding the coordinates in pixels where the signature and initials will be is a
+bit of a pain. One must know that the pages are normalized to a size of
+2480x3508, and do a cross-multiplication.
+
+To ease the process, run the =falsicoord.py= utility, you will see a gray canvas
+that has the same shape as a portrait A4 page. When you click on it, the window
+will close and on the standard output will be printed the =-x= and =-y= options
+with the correct values in pixel. You can then copy paste those values in your
+call to =falsisign.sh=.
+
+**** TODO Integrate falsicoord in falsisign.sh and display it for each page, with the page as the canvas background

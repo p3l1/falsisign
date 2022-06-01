@@ -3,6 +3,7 @@
 (use-modules (guix gexp))
 (use-modules (gnu packages))
 (use-modules (gnu packages bash))
+(use-modules (gnu packages python))
 (use-modules (gnu packages imagemagick))
 (use-modules (gnu packages ghostscript))
 (use-modules (gnu packages pdf))
@@ -35,12 +36,13 @@
    (source (local-file %source-dir
                        #:recursive? #t
                        #:select? skip-git-and-build-directory))
-   (propagated-inputs (list bash imagemagick ghostscript poppler))
+   (propagated-inputs (list bash imagemagick ghostscript poppler python))
    (build-system copy-build-system)
    (arguments
     `(#:install-plan '(
                        ("./falsisign.sh" "bin/falsisign")
                        ("./signdiv.sh" "bin/signdiv")
+                       ("./falsicoord.py" "bin/falsicoord")
                        )
       #:phases
       (modify-phases %standard-phases
