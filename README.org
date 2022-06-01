@@ -59,11 +59,12 @@ You can maintain multiple signature directories, or run the above again if you w
 
 
 You can also initial and sign a document, and choose the pages where to sign and initial (don't forget to quote the page numbers!). The full usage string is:
-#+BEGIN_SRC bash :results raw :exports results
-  ./falsisign.sh -h
+#+BEGIN_SRC bash :results output verbatim code :exports results
+  ./falsisign.sh -h
 #+END_SRC
 
 #+RESULTS:
+#+begin_src bash
 Falsisign.
 
 Usage:
@@ -86,6 +87,8 @@ Options:
     -r <density>     Specify the dpi to use in intermediate steps
     -a <angle>  Specify the rotation (in degrees) to use for all pages
     -o <output_pdf>  The output file name
+#+end_src
+
 *** Finding the coordinates for the signature and initials
 Finding the coordinates in pixels where the signature and initials will be is a
 bit of a pain. One must know that the pages are normalized to a size of
