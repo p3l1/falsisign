@@ -29,7 +29,7 @@ EOF
     exit "$1"
 }
 
-while getopts :hd:x:y:p:s:ci:z:t:q:r:a:o: flag
+while getopts :hd:x:y:p:s:S:ci:z:t:q:r:a:o: flag
 do
     case "${flag}" in
         d ) DOCUMENT="${OPTARG}";;
