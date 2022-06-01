@@ -20,6 +20,8 @@ then expect to be in your path:
 The executable file and all its dependencies will be in =/gnu/store/=, you can
 safely remove this directory and the =/opt/bin/*= links in order to safely
 uninstall falsisign.
+*** Nix
+Gabriel Volpe (@gvolpe) was kind enough to package falsisign for Nix: https://github.com/gvolpe/falsisign.nix
 *** From source
    [[https://guix.gnu.org/manual/en/html_node/Binary-Installation.html][Install guix]]
 
