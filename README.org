@@ -29,6 +29,11 @@ Gabriel Volpe (@gvolpe) was kind enough to package falsisign for Nix: https://gi
    : git clone https://gitlab.com/edouardklein/falsisign.git
    cd into it and activate a guix shell where [[./guix.scm][all the dependencies]] will be met:
    : guix shell
+
+*** Docker
+Михаил Полыковский was kind enough to provide a DockerFile, you can now clone this repository and run
+: docker build -t falsisign .
+to build the container, then use =docker run= to falsisign documents.
 *** Manual installation
    Please install the following dependencies:
    - [[https://poppler.freedesktop.org/][pdfseparate]]
