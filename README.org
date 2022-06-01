@@ -98,3 +98,11 @@ with the correct values in pixel. You can then copy paste those values in your
 call to =falsisign.sh=.
 
 **** TODO Integrate falsicoord in falsisign.sh and display it for each page, with the page as the canvas background
+** Thanks
+Thank you to all those to reported issues and contributed patches, in particular:
+- Gabriel Volpe
+- bocekm
+- Francesco Frassinelli's
+- FalcoSuessgott
+- Karsten Dambekalns
+- Barak A. Pearlmutter
