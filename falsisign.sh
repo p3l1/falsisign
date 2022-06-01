@@ -137,7 +137,7 @@ do
         else
             ROTATION="${FIXED_ROTATION}"
         fi
-        convert -density "${DENSITY}" "${PAGE_IN}" -linear-stretch 3.5%x10% -blur 0x0.5 -attenuate 0.25 -rotate "${ROTATION}" +noise Gaussian "${TMPDIR}/${PAGE_BN}-scanned.pdf"
+        convert -density "${DENSITY}" "${PAGE_IN}" -contrast-stretch 3.5%x10% -blur 0x0.5 -attenuate 0.25 -rotate "${ROTATION}" +noise Gaussian "${TMPDIR}/${PAGE_BN}-scanned.pdf"
     fi
 done
 convert -density "${DENSITY}" "${TMPDIR}/${DOCUMENT_BN}"-*-scanned.pdf "${TMPDIR}/${DOCUMENT_BN}"_large.pdf
