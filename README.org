@@ -57,12 +57,15 @@ You can maintain multiple signature directories, or run the above again if you w
 
 
 You can also initial and sign a document, and choose the pages where to sign and initial (don't forget to quote the page numbers!). The full usage string is:
-#+NAME: Usage string
-#+begin_src text
+#+BEGIN_SRC bash :results raw :exports results
+  ./falsisign.sh -h
+#+END_SRC
+
+#+RESULTS:
 Falsisign.
 
 Usage:
-    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-S <scale>] [-i <init_dir> -z <Z> -t <T> [-q <pages>]] -o <output_pdf>
+    falsisign -d <input_pdf> -x <X> -y <Y> [-p <pages>] -s <sign_dir> [-S <scale>] [-c] [-i <init_dir> -z <Z> -t <T> [-q <pages>]] [-r <density>] -o <output_pdf>
 
 Options:
     -d <input_pdf>   The PDF document you want to sign
@@ -78,5 +81,6 @@ Options:
     -t <T>           Optional vertical position in pixels of the initials
     -q <pages>       Optional space-separated list of pages to initial
                      Defaults to all but the last
+    -r <density>     Specify the dpi to use in intermediate steps
+    -a <angle>  Specify the rotation (in degrees) to use for all pages
     -o <output_pdf>  The output file name
-#+end_src
