@@ -1,48 +1,25 @@
 * FalsiScan: Make it look like a PDF has been hand signed and scanned
 #+begin_abstract
+
+This is a fork from https://gitlab.com/edouardklein/falsisign
+
 For bureaucratic reasons, a colleague of mine had to print, sign, scan and send by email a high number of pages.
 To save trees, ink, time, and to stick it to the bureaucrats, I wrote this script.
 #+end_abstract
-[[file:falsiscan.png]]
-** Installation
+
+** Additional Information
 ⚠ You may need to tweak ImageMagick's default security policy by adding
 :  <policy domain="coder" rights="read | write" pattern="PDF" />
 just before =</policymap>= in =/etc/ImageMagick-7/policy.xml=, as recommended in https://stackoverflow.com/questions/52998331/imagemagick-security-policy-pdf-blocking-conversion
-*** Binary
-Get the latest Linux binary:
-: wget https://dump.rdklein.fr/falsisign.tar.gz
-unpack it at the root of your disk with
-: cd / && sudo tar xvzf /path/to/falsisign.tar.gz
-It will link the =falsisign= and =signdiv= exe in =/opt/bin/=, which the scripts
-then expect to be in your path:
-: echo 'export PATH=$PATH:/opt/bin' >> ~/.bash_profile  # or whatever the profile of your shell is
 
-The executable file and all its dependencies will be in =/gnu/store/=, you can
-safely remove this directory and the =/opt/bin/*= links in order to safely
-uninstall falsisign.
-*** Nix
-Gabriel Volpe (@gvolpe) was kind enough to package falsisign for Nix: https://github.com/gvolpe/falsisign.nix
-*** From source
-   [[https://guix.gnu.org/manual/en/html_node/Binary-Installation.html][Install guix]]
-
-   Clone this repo:
-   : git clone https://gitlab.com/edouardklein/falsisign.git
-   cd into it and activate a guix shell where [[./guix.scm][all the dependencies]] will be met:
-   : guix shell
+The policy is automatically added to the policy.xml via a `RUN` statement within the Dockerfile.
 
 *** Docker
 Михаил Полыковский was kind enough to provide a DockerFile, you can now clone this repository and run
 : docker build -t falsisign .
-to build the container, then use =docker run= to falsisign documents.
-*** Manual installation
-   Please install the following dependencies:
-   - [[https://poppler.freedesktop.org/][pdfseparate]]
-   - [[https://imagemagick.org/index.php][ImageMagick]]
-   - [[https://www.gnu.org/software/coreutils/][Coreutils]] (Install by default on most Linux distros, or =brew install coreutils= on MacOSX)
-
-     
-   Clone this repo
-   : git clone https://gitlab.com/edouardklein/falsisign.git
+to build the container, then use 
+: docker run -it --rm -v ~/Documents/falsisign/input:/input:rw -v ~/Documents/falsisign/output:/output:rw falsisign /bin/bash .
+to falsisign documents.
 
 ** Usage
 *** Create a signature sample
@@ -61,7 +38,6 @@ You can maintain multiple signature directories, or run the above again if you w
   - The second argument is the directory with all your different signatures
   - The next two arguments are the X and Y coordinates of where your signature will be. The page dimension is 3560x4752.
   - The last argument is the output file name.
-
 
 You can also initial and sign a document, and choose the pages where to sign and initial (don't forget to quote the page numbers!). The full usage string is:
 #+BEGIN_SRC bash :results output verbatim code :exports results
