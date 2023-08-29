@@ -12,7 +12,7 @@ To save trees, ink, time, and to stick it to the bureaucrats, I wrote this scrip
 :  <policy domain="coder" rights="read | write" pattern="PDF" />
 just before =</policymap>= in =/etc/ImageMagick-7/policy.xml=, as recommended in https://stackoverflow.com/questions/52998331/imagemagick-security-policy-pdf-blocking-conversion
 
-The policy is automatically added to the policy.xml via a `RUN` statement within the Dockerfile.
+The policy is automatically added to the =policy.xml= via a =RUN= statement within the Dockerfile.
 
 *** Docker
 Михаил Полыковский was kind enough to provide a DockerFile, you can now clone this repository and run
