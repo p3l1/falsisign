@@ -18,7 +18,7 @@ The policy is automatically added to the policy.xml via a `RUN` statement within
 Михаил Полыковский was kind enough to provide a DockerFile, you can now clone this repository and run
 : docker build -t falsisign .
 to build the container, then use 
-: docker run -it --rm -v ~/Documents/falsisign/input:/input:rw -v ~/Documents/falsisign/output:/output:rw falsisign /bin/bash .
+: docker run -it --rm -v ~/Documents/falsisign/input:/input:rw -v ~/Documents/falsisign/output:/output:rw falsisign /bin/bash
 to falsisign documents.
 
 ** Usage
